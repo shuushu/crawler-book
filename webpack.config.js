@@ -1,13 +1,26 @@
 var path = require('path')
 var webpack = require('webpack')
 
+var outputs = {
+  path: path.resolve(__dirname, './dist'),
+  publicPath: '/dist/',
+  filename: 'build.js'
+}
+
+if (process.env.NODE_ENV === 'production') {
+  console.log('production')
+  outputs = {
+    path: path.resolve(__dirname, './release'),
+    filename: '[name].js',
+    chunkFilename: 'js/[name].app.js',
+    publicPath: '/trunk/_team/book/',
+  }
+}
+
+
 module.exports = {
   entry: './src/main.js',
-  output: {
-    path: path.resolve(__dirname, './dist'),
-    publicPath: '/dist/',
-    filename: 'build.js'
-  },
+  output: outputs,
   module: {
     rules: [
       {
@@ -69,6 +82,12 @@ module.exports = {
       }
     ]
   },
+  node: {
+    fs: 'empty',
+    child_process: 'empty',
+    net: 'empty',
+    tls: 'empty'
+  },
   resolve: {
     alias: {
       'vue$': 'vue/dist/vue.esm.js'
@@ -78,7 +97,8 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     noInfo: true,
-    overlay: true
+    overlay: true,
+    //host: '10.80.16.67'
   },
   performance: {
     hints: false

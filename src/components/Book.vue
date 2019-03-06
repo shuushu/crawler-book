@@ -1,6 +1,7 @@
 <template>
   <figure class="book">
-    <div class="icon-label">
+
+    <div class="icon-label" v-if="data.cnt > 0">
       <div class="cnt">{{ data.cnt }}</div>
       <md-icon>favorite</md-icon>
     </div>
@@ -8,6 +9,9 @@
 
     <ul class="hardcover_front">
       <li class="imgWrap">
+        <div class="category">
+          {{ toUpperCase(data.cate) }}
+        </div>
         <img :src="data.thumb" alt="" width="100%" height="100%">
       </li>
       <li></li>
@@ -18,11 +22,8 @@
     <ul class="page">
       <li></li>
       <li class="btnWrap">
-        <a :href="data.refUrl" target="_blank">
-          <md-button class="md-icon-button">
-            <md-icon>explore</md-icon>
-          </md-button>
-        </a>
+        <h5 class="detail-subj">책소개</h5>
+        <div class="detail">{{ data.detail }}</div>
       </li>
       <li></li>
       <li></li>
@@ -40,7 +41,12 @@
       <li></li>
     </ul>
     <figcaption>
-      <h1>{{ toUpperCase(data.cate) }} {{ data.name }}</h1>
+      <h1>
+        <a :href="data.refUrl" class="link" target="_blank">
+            <md-icon>explore</md-icon>
+        </a>
+        {{ data.name }}
+      </h1>
       <span>{{ data.desc }}</span>
     </figcaption>
   </figure>
@@ -58,7 +64,7 @@
           toUpperCase(data) {
             let category = data.join(", ");
 
-            return `[${category.toUpperCase()}]`
+            return `${category.toUpperCase()}`
           }
         }
     }
@@ -66,6 +72,28 @@
 
 <style lang="scss" scoped>
   @import '~vue-material/src/components/MdIcon/mixins';
+  .detail-subj{
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  .detail{
+    overflow: hidden;
+    margin: 5px 10px 5px 10px;
+    font-size: 12px;
+    color: #333;
+    line-height: 1.4;
+  }
+  .category{
+    position: absolute;
+    right: 3px;
+    top: 0;
+    z-index: 10;
+    font-size: 11px;
+    letter-spacing: 1px;
+    background-color: rgba(black, .7);
+    color: #fff;
+    padding: 0 5px;
+  }
 
   .icon-label{
     position: absolute;
@@ -90,10 +118,27 @@
       font-size: $v !important;
     }
   }
+  .link{
+    font-size: 14px;
+    display: inline-block;
+    vertical-align: middle;
+    .md-icon{
+      font-size: 30px !important;
+      margin-right: 5px;
+      color: #333;
+    }
+  }
   .btnWrap{
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+  }
+  .pos{
+    margin-top: 3px;
+    font-size: 15px;
+    font-weight: bold;
+
   }
   /*
       A. Mini Reset
@@ -760,8 +805,8 @@
   figcaption {
     position: absolute;
     top: 250px;
-    width: 160%;
-    left: -30%;
+    width: 210%;
+    left: -60%;
     text-align: center;
     -webkit-backface-visibility: hidden;
   }
@@ -775,6 +820,9 @@
     color: #16a085;
     padding: 0.6em 0 1em 0;
     display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre;
   }
 
   figcaption p {

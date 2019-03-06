@@ -2,7 +2,7 @@
     <form novalidate class="md-layout" @submit.prevent="login">
       <md-card class="md-layout-item md-size-50 md-small-size-100">
         <md-card-header>
-          <div class="md-title">Login</div>
+          <div class="md-title"><md-icon>lock</md-icon> LOGIN</div>
         </md-card-header>
 
         <md-card-content>
@@ -51,6 +51,8 @@
       </md-card>
 
       <md-snackbar :md-active.sync="userSaved">The user {{ form.id }} was saved with success!</md-snackbar>
+
+
     </form>
 </template>
 <script>
@@ -111,19 +113,23 @@
             id: this.form.id,
             pw: this.form.pw,
             name: this.form.name
-          }).then((res) => {
-            if (res.state === 'FAIL') {
-              this.clearForm();
-              alert(res)
-            } else {
+          }).then(res => {
+            if (res.state) {
               this.$router.push('/list');
+            } else {
+              this.clearForm();
+              this.$run('dialogAlert', res);
             }
           });
         }
       },
       googleLogin() {
-        this.$run('loginGoogle').then(() => {
-          this.$router.push('/list');
+        this.$run('loginGoogle').then(res => {
+          if (res.state) {
+            this.$router.push('/list');
+          } else {
+            this.$run('dialogAlert', res);
+          }
         })
       },
       getValidationClass (fieldName) {
@@ -149,12 +155,12 @@
           this.$run('loginEmail', {
             id: this.form.id,
             pw: this.form.pw
-          }).then((res) => {
-            if (res.state === 'FAIL') {
-              this.clearForm();
-              alert(res)
-            } else {
+          }).then(res => {
+            if (res.state) {
               this.$router.push('/list');
+            } else {
+              this.clearForm();
+              this.$run('dialogAlert', res);
             }
           })
         }
@@ -164,6 +170,9 @@
 </script>
 
 <style lang="scss" scoped>
+  .md-title{
+    .md-icon{color: #000;}
+  }
   .md-progress-bar {
     position: absolute;
     top: 0;

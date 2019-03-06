@@ -1,50 +1,38 @@
 import firebase from 'firebase'
-import mutations from './mutations'
-import { put, call, delay } from "vuex-saga";
+import { put, call, delay } from "vuex-saga"
+import ROOT from './constant'
 
 export default {
   *loginEmail({}, { id, pw }) {
-    yield put(mutations.REQ_WAIT.name)
+    yield put(ROOT.LOGIN_EMAIL_REQ_WAIT)
 
     let auth = yield call(() => {
       return new Promise((resolve) => {
         firebase.auth().signInWithEmailAndPassword(id, pw)
           .catch(error => {
-            resolve(Object.assign(error, {state: 'FAIL'}));
+            resolve({ ...error, state: false })
+            this.commit(ROOT.LOGIN_EMAIL_REQ_FAIL)
           })
           .then(result => {
             if (result) {
-              let { displayName, uid, email, photoURL } = result;
-
-              resolve(Object.assign({
-                displayName,
-                uid,
-                email,
-                photoURL
-              }, {state: 'SUCCESS'}));
-
+              resolve({ state: true });
+              this.commit(ROOT.LOGIN_EMAIL_REQ_SUCCESS)
             }
           });
       })
     });
 
-    if (auth.state === 'FAIL') {
-      yield put(mutations.REQ_FAIL.name);
-      return auth
-    } else {
-      yield put(mutations.SET_AUTH.name, auth);
-      yield put(mutations.REQ_SUCESS.name)
-      return auth
-    }
+    return auth;
   },
   *createMailID(store, { id, pw, name }) {
-    yield put(mutations.REQ_WAIT.name)
+    yield put(ROOT.CREATE_AUTH_REQ_WAIT)
 
     let auth = yield call(() => {
       return new Promise((resolve) => {
         firebase.auth().createUserWithEmailAndPassword(id, pw)
           .catch(error => {
-            resolve(Object.assign(error, {state: 'FAIL'}));
+            this.commit(ROOT.CREATE_AUTH_REQ_FAIL)
+            resolve({ ...error, state: false })
           })
           .then(result => {
             if (result) {
@@ -58,25 +46,19 @@ export default {
               }
 
               firebase.database().ref('books/users').update(userData);
-              resolve(Object.assign(userData, {state: 'SUCCESS'}));
+              this.commit(ROOT.CREATE_AUTH_REQ_SUCESS)
+              resolve({ state: true });
             }
           })
       })
     });
 
-    if (auth.state === 'FAIL') {
-      yield put(mutations.REQ_FAIL.name);
-      return auth
-    } else {
-      yield put(mutations.SET_AUTH.name, auth);
-      yield put(mutations.REQ_SUCESS.name)
-      return auth
-    }
+    return auth;
   },
   *loginGoogle() {
-    yield put(mutations.REQ_WAIT.name)
+    yield put(ROOT.LOGIN_GOOGLE_AUTH_REQ_WAIT)
 
-    let auth = yield call(function() {
+    let auth = yield call(() => {
       return new Promise((resolve) => {
 
         let provider = new firebase.auth.GoogleAuthProvider()
@@ -91,22 +73,22 @@ export default {
               uid,
               email,
               photoURL
-            }, {state: 'SUCCESS'}));
+            }, { state: true }));
 
             firebase.database().ref('books/users').child(uid).set({
               displayName, uid, email, photoURL
-            })
+            });
+
+            this.commit(ROOT.LOGIN_GOOGLE_AUTH_REQ_SUCCESS)
           }
         }).catch(error => {
-          resolve(Object.assign(error, {state: 'FAIL'}));
+          resolve({ ...error, state: false });
+          this.commit(ROOT.LOGIN_GOOGLE_AUTH_REQ_FAIL)
         });
-
-
       })
     });
 
-    yield put(mutations.SET_AUTH.name, auth)
-    yield put(mutations.REQ_SUCESS.name)
+    return auth;
   },
   *getSession(store) {
     let { auth } = store.state;
@@ -118,11 +100,11 @@ export default {
           firebase.auth().onAuthStateChanged(user => {
             if (user) {
               firebase.database().ref(`books/users/${user.uid}`).once('value').then(result => {
-                store.commit('SESSION_AUTH', result.val())
+                store.commit(ROOT.SESSION_AUTH, result.val())
                 resolve(result.val())
               })
             } else {
-              store.commit('SESSION_OUT', null)
+              store.commit(ROOT.SESSION_OUT, null)
             }
           })
         } else {
@@ -133,5 +115,23 @@ export default {
 
 
     return result
+  },
+  *logout() {
+    let result = yield call(() => {
+      return new Promise(resolve => {
+        firebase.auth().signOut().then(() => {
+          resolve(true)
+        }).catch(error => {
+          resolve(false, error)
+        });
+      })
+    });
+    return result;
+  },
+  *dialogAlert(store, params) {
+    yield put(ROOT.POPUP_ALERT, params)
+  },
+  *dialogConfirm(store, params) {
+    yield put(ROOT.POPUP_CONFIRM, params)
   }
 }

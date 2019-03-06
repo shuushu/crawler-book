@@ -1,25 +1,24 @@
 import firebase from 'firebase'
 import rootMutations from '../mutations'
 import { put, call, delay } from "vuex-saga";
+import ROOT, { RENT } from '../constant'
+import { index } from "../../common/config";
 
 let state = {
   item: null
 }
 
 const mutations = {
-  RENTLIST: (state, data) => {
+  GET_RENTLIST: (state, data) => {
     state.item = data
-  },
-  REMOVE_RENT_ITEM: (state, data) => {
-
   }
 }
 
 const actions = {
-  *list (store, uid) {
+  *getRentList (store, uid) {
     if (state.item) return;
 
-    yield put(rootMutations.REQ_WAIT.name)
+    yield put(ROOT.GET_RENTLIST_REQ_WAIT)
 
     yield call(() => {
       return new Promise(() => {
@@ -33,24 +32,44 @@ const actions = {
                 obj[bookID] = snap.val();
                 // 조회완료
                 if (cnt >= size) {
-                  this.commit(`rental/${mutations.RENTLIST.name}`, obj);
-                  this.commit(rootMutations.REQ_SUCESS.name)
+                  this.commit(RENT.GET_RENTLIST, obj);
+                  this.commit(ROOT.GET_RENTLIST_REQ_SUCCESS)
                 }
               })
             }
           } else {
-            this.commit(`rental/${mutations.RENTLIST.name}`, false);
-            this.commit(rootMutations.REQ_FAIL.name)
+            this.commit(RENT.GET_RENTLIST, false);
+            this.commit(ROOT.GET_RENTLIST_REQ_FAIL)
           }
         })
       })
     });
   },
   *removeItem (store, key) {
-    firebase.database().ref(`books/rent/${key}`).set(null);
-    firebase.database().ref(`books/list/${key}/state`).set(0);
-    yield put(`rental/${mutations.REMOVE_RENT_ITEM.name}`)
-    return true
+    yield put(ROOT.REMOVE_RENT_REQ_WAIT)
+
+
+    yield call(() => {
+      return new Promise(resolve => {
+        firebase.database().ref(`books/rent/${key}`).set(null);
+        firebase.database().ref(`books/list/${key}/state`).set(2);
+
+        // searchDB
+        index.partialUpdateObjects([{
+          state: 2,
+          objectID: key
+        }], err => {
+          if (err) {
+            this.commit(ROOT.REMOVE_RENT_REQ_FAIL)
+            resolve(false)
+          } else {
+            this.commit(ROOT.REMOVE_RENT_REQ_SUCCESS)
+            resolve(true)
+          }
+        });
+      })
+    })
+
   }
 }
 

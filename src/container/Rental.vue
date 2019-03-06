@@ -5,7 +5,14 @@
     </div>
 
     <div v-else>
-      <div  v-if="myRental === false">대여한 도서 없음</div>
+      <div v-if="myRental === false" class="md-empty-state-wrap">
+        <md-empty-state
+          class="md-primary"
+          md-icon="sentiment_dissatisfied"
+          md-label="Nothing in Done"
+          md-description="대여한 도서 없음">
+        </md-empty-state>
+      </div>
       <md-list v-else class="md-triple-line md-dense"  v-for="(items, key) in myRental" :key="key">
         <md-list-item>
           <md-avatar>
@@ -26,16 +33,6 @@
       </md-list>
     </div>
 
-
-    <md-dialog-confirm
-      :md-active.sync="isReturn.flag"
-      :md-content="isReturn.context"
-      md-title="대여 반납 할까요?"
-      md-confirm-text="Yes"
-      md-cancel-text="No"
-      @md-cancel=""
-      @md-confirm="confirm"
-    />
     <md-snackbar :md-active.sync="complete">반납이 완료 되었습니다!</md-snackbar>
 
   </div>
@@ -64,7 +61,7 @@
     },
     created () {
       this.$run('getSession').then(res => {
-        this.$run('rental/list', res.uid)
+        this.$run('rental/getRentList', res.uid)
       })
     },
 
@@ -75,12 +72,15 @@
         return `[${category.toUpperCase()}]`
       },
       handleClick (params) {
-        this.isReturn.flag = true;
-        this.isReturn.context = `<strong>${params.name}</strong> 대여한 책을 반납하시겠습니까?`;
-        this.isReturn.key = params.key;
+        this.$run('dialogConfirm', {
+          name: '책을 반납 하시겠습니까?',
+          message: `<strong>${params.name}</strong> 대여한 책을 반납하시겠습니까?`,
+          key: params.key,
+          action: this.confirm
+        })
       },
-      confirm() {
-        this.$run('rental/removeItem', this.isReturn.key)
+      confirm(data) {
+        this.$run('rental/removeItem', data.key)
       }
     }
   }

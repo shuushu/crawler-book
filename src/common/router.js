@@ -12,6 +12,10 @@ const routerMap = [
   { name: 'list', path: '/list', component: '/List'},
   { name: 'write', path: '/write', component: '/Write'},
   { name: 'rental', path: '/rental', component: '/Rental'},
+  { name: 'search', path: '/search', component: '/SearchResult'},
+  { name: 'search', path: '/search/:id', component: '/SearchResult'},
+  { name: 'history', path: '/history', component: '/History'},
+  { name: 'error', path: '*', component: '/Error'},
 ];
 
 const redirectRoute = [

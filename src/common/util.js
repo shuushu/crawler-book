@@ -18,6 +18,15 @@ const curry = fn => {
   })()
 }
 
+const yyyymm = (v) => {
+  let mm = v.getMonth() + 1; // getMonth() is zero-based
 
-export { urlExp, curry }
+  return [v.getFullYear(),
+    (mm>9 ? '' : '0') + mm
+  ].join('');
+}
+
+
+
+export { urlExp, curry, yyyymm }
 
