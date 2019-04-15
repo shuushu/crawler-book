@@ -66,4 +66,4 @@ npm run build
 
 
 
-![Alt text](http://gnscjfdl.cafe24.com/chat/flow.jpg)
+![Alt text](http://gnscjfdl.cafe24.com/app/flow.jpg)
