@@ -66,4 +66,4 @@ npm run build
 
 
 
-![Alt text](./src/book.png)
+![erd](./src/book.png)
