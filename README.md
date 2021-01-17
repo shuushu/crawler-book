@@ -26,6 +26,8 @@ store (스토어, mutation, action등)
 
 ```
 
+![chat erd](./release/book.png)
+
 
 > A Vue.js project
 
