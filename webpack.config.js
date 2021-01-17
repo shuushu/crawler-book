@@ -10,7 +10,7 @@ var outputs = {
 if (process.env.NODE_ENV === 'production') {
   console.log('production')
   outputs = {
-    path: path.resolve(__dirname, './release'),
+    path: '/crawler-book/release/',
     filename: '[name].js',
     chunkFilename: 'js/[name].app.js',
     publicPath: '/crawler-book/release/',
