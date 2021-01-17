@@ -1,22 +1,29 @@
 import algoliasearch from "algoliasearch";
 
-export const fbConfig = {
-  apiKey: "AIzaSyCh-Yb5QRWYNPtypC7ZR68JmxcDCld6f3w",
-  authDomain: "books-38df3.firebaseapp.com",
-  databaseURL: "https://books-38df3.firebaseio.com",
-  storageBucket: "books-38df3.appspot.com"
+const fbConfig = {
+  apiKey: "AIzaSyBwc5tkZM3fEQcyPC1-HfguTbIt8woO9iA",
+  authDomain: "shushu-cb26c.firebaseapp.com",
+  databaseURL: "https://shushu-cb26c.firebaseio.com",
+  storageBucket: "shushu-cb26c.appspot.com"
 };
 
 const algolia = algoliasearch(
-  'IR4NMVE7DJ',
-  '55d298ae2187ff5f27bebdf3db895a85'
+  'DRSKU1E4I6',
+  '00fa756e3e424016ca0d3ed071850f77',
+  {
+    timeouts: {
+      connect: 2, // connection timeout in seconds
+      read: 5, // read timeout in seconds
+      write: 30 // write timeout in seconds
+    }
+  }
 );
 
 
-export const index = algolia.initIndex('books');
+const index = algolia.initIndex('books');
 
 // 상태값
-export const TYPE = [
+const TYPE = [
   'INIT',
   'SET_PAGE', // 페이징 카운트
   'RENT', // 공통함수로 호출하여 네이밍룰 따름 > 모든 빌린도서 > get
@@ -34,3 +41,6 @@ export const TYPE = [
   'LOGIN_GOOGLE_AUTH',
   'CREATE_AUTH'
 ];
+export {
+  fbConfig, index, TYPE
+}
