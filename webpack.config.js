@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === 'production') {
     path: path.resolve(__dirname, './release'),
     filename: '[name].js',
     chunkFilename: 'js/[name].app.js',
-    publicPath: '/crawler-book/',
+    publicPath: '/crawler-book/release/',
     //publicPath: '/trunk/_team/book/',
   }
 }
