@@ -45,7 +45,7 @@
           <div v-else>
             <md-button type="submit" class="md-primary" :disabled="isLoading">로그인</md-button>
             <md-button class="md-primary" @click.prevent="googleLogin" :disabled="isLoading">구글 로그인</md-button>
-            <md-button class="md-primary" @click.prevent="isCreate = true" :disabled="isLoading" >계정 생성</md-button>
+            <md-button class="md-primary" @click.prevent="() => { clearForm(); isCreate = true }" :disabled="isLoading" >계정 생성</md-button>
           </div>
         </md-card-actions>
       </md-card>
@@ -72,8 +72,8 @@
       isCreate: false,
       form: {
         name: null,
-        id: null,
-        pw: null
+        id: 'book_test@nate.com',
+        pw: '111111'
       },
       userSaved: false
     }),

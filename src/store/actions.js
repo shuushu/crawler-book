@@ -38,11 +38,11 @@ export default {
             if (result) {
               let userData = {}
 
-              userData[result.uid] = {
+              userData[result.user.uid] = {
                 email: id,
                 displayName: name,
                 photoURL: 'http://placehold.it/60x60',
-                uid: result.uid
+                uid: result.user.uid
               }
 
               firebase.database().ref('books/users').update(userData);

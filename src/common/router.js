@@ -15,7 +15,7 @@ const routerMap = [
   { name: 'search', path: '/search', component: '/SearchResult'},
   { name: 'search', path: '/search/:id', component: '/SearchResult'},
   { name: 'history', path: '/history', component: '/History'},
-  { name: 'error', path: '*', component: '/Error'},
+  { name: 'list', path: '*', component: '/List'},
 ];
 
 const redirectRoute = [
@@ -33,8 +33,8 @@ const routes = [...routerMap.map(route => {
 
 const router = new VueRouter({
   mode: 'history',
-  //base: __dirname,
-  base: '/trunk/_team/book/',
+  base: __dirname,
+  //base: '/trunk/_team/book/',
   routes
 });
 
