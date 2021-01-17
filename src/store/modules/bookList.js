@@ -17,7 +17,7 @@ let state = {
   item: null,
   users: null,
   search: [],
-  page: 3,
+  page: 20,
   modify: null,
   history: null
 }
@@ -312,7 +312,7 @@ const actions = {
     let result = yield call(() => {
       return new Promise(resolve => {
         let updates = Object.assign(params);
-        delete updates.uid;
+        //delete updates.uid;
 
         firebase.database().ref(`books/list/${params.objectID}`).update(updates).then(error => {
           if (error) {
@@ -356,8 +356,8 @@ const actions = {
     })
   },
   *setHistory(store, params) {
-    let { name, desc, refUrl, uid, thumb, objectID, price } = params;
-    let current = yyyymm(new Date());
+    let { name, desc, refUrl, uid, thumb, objectID, price, old } = params;
+    let current = old ? 'old' : yyyymm(new Date());
     firebase.database().ref('books/history').child(current).child(objectID).update({ name, desc, refUrl, uid, thumb, price })
   },
   *reqBook(store, params) {
@@ -386,14 +386,15 @@ const actions = {
             if (response.status === 200) {
               let html = response.data,
                 $ = cheerio.load(html),
-                thumb = $('.coversize').attr('src'),
+                thumb = $('#CoverMainImage').attr('src') || $('.prodImage_size img').attr('src'),
                 name = $('.pdp_header_info .pdp_black').text(),
                 desc = $('.pdp_header_info .pdp_fwn').text() || '-',
-                detail = $('#introduce_short').text(),
-                price = '' + $('#priceInfo .pdp_price .pdp_pink').text(),
+                detail = $('meta[property="og:description"]').attr('content'),
+                price = '' + $('meta[property="og:price"]').attr('content'),
                 refUrl = `https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=${objectID}`;
 
-              thumb = `http:${thumb}`;
+              thumb = `${thumb}`;
+
               detail = detail.trim();
               detail = detail.substr(0, 142) + '...';
               //price = price.split(',');

@@ -31,3 +31,11 @@ export const BOOKLIST = {
 export const RENT = {
   GET_RENTLIST: 'rental/GET_RENTLIST'
 }
+
+
+export const ERROR = {
+  'auth/wrong-password': '비밀번호가 잘못 되었습니다',
+  'auth/user-not-found': '아이디가 잘못 되었습니다.',
+  'auth/email-already-in-use': '해당 이메일 사용되고 있습니다.',
+  'auth/popup-closed-by-user': '계정선택 팝업창을 닫아 로그인 화면으로 돌아갑니다.'
+}

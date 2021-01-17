@@ -7,18 +7,22 @@
           </md-button>
         </div>
 
-        <md-autocomplete
-          class="search"
-          v-model="selectedEmployee"
-          :md-options="bookNames"
-          md-layout="box">
-          <label>Search...</label>
-        </md-autocomplete>
 
-        <div class="md-toolbar-section-end">
+        <div class="md-toolbar-section-start">
+
+          <md-autocomplete
+            class="search"
+            v-model="selectedEmployee"
+            :md-options="bookNames"
+            md-layout="box">
+            <label>Search...</label>
+          </md-autocomplete>
           <md-button class="md-icon-button" @click="search">
             <md-icon>refresh</md-icon>
           </md-button>
+        </div>
+        <div class="md-toolbar-section-end">
+
           <md-button class="md-icon-button" @click="logout">
             <md-icon>highlight_off</md-icon>
           </md-button>
@@ -32,7 +36,7 @@
   export default {
     name: 'Header',
     data: () => ({
-      selectedEmployee: ''
+      selectedEmployee: ' '
     }),
     methods: {
       historyBack(){
@@ -81,6 +85,7 @@
   }
   .search {
     max-width: 500px;
+
   }
   .md-autocomplete-box-content{
     background-color: white;

@@ -45,7 +45,10 @@
                   </span>
                 </div>
                 <div v-else-if="list.state === 0">
-                  <md-button v-if="adminCheck()" @click="modify(key)" class="md-raised md-accent">승인하기</md-button>
+                  <div v-if="adminCheck()">
+                    <md-button  @click="modify(key)" class="md-raised md-accent">승인하기</md-button>
+                    <md-button  @click="deleteBook(key)" class="md-raised">삭제</md-button>
+                  </div>
                   <md-button v-else class="md-raised" disabled>승인중</md-button>
                 </div>
                 <md-button v-else class="btnRent md-primary md-raised">
@@ -96,7 +99,8 @@
 <script>
 import Book from "../components/Book";
 import { mapState, mapGetters } from 'vuex'
-
+import firebase from 'firebase'
+import { yyyymm } from "../common/util";
 
 export default {
   name: 'list',
@@ -167,6 +171,12 @@ export default {
         return false;
       }
     },
+    deleteBook(key) {
+      let month = yyyymm(new Date());
+
+      firebase.database().ref(`books/list/${key}`).set(null)
+      firebase.database().ref(`books/history/${month}/${key}`).set(null)
+    },
     modify(key) {
       this.$router.push('/write');
       let temp = Object.assign(this.fetchData[key], {objectID: key})
@@ -187,8 +197,7 @@ export default {
     @while $i > 0 {
       &.A#{$i} .A#{$i}{background-color: #deea66;}
       $i: $i - 1;
-    }
-    .table-wrap{
+    }.table-wrap{
       overflow: hidden;
       padding: 0 20px;
     }
@@ -288,6 +297,14 @@ export default {
     }
   }
 
+  figcaption h1{
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
   @media screen and (min-width: 1200px) {
     .md-layout-item {
       flex: 400px

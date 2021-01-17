@@ -1,69 +1,45 @@
 # book
-vue, firebase를 이용해 간단한 도서 웹앱 만들기
-[example](http://shuushu.github.io/crawler-book/)
+> 알라딘 사이트에서 url 입력하면 책정보 리소스를 크롤링하여 DB에 등록한다.
 
-
-## Features
-- vue, vuex, vue-router, vuex-saga, node-sass
-- [**firebase**](#documentation): 데이터 저장, Auth 및 socket.io 통신
-- [**vue**](https://vuematerial.io/getting-started/): 프로토타입 UI
-- [**lgoliasearch**](https://www.algolia.com/) 도서 검색
-- 웹크롤링: cheerio, cors 우회 도메인
-
-
-## Getting started
 ```
+- client: vue, vuex, vuex-saga, vuematerial.io, vue-router
+- DB: firebase Database
+- 검색DB: algoliasearch
+
+- 웹크롤링: cheerio, cors 우회 도메인
+```
+
+## firebase 트리구조
+```
+books
+  > history (도서 신청 내역)
+  > list (도서 등록 내역)
+  > user (멤버)
+```
+
+## src 구조
+```
+common (환경설정, 유틸리티, 라우터)
+components (공통 컴포넌트)
+container (페이지)
+store (스토어, mutation, action등)
+
+```
+
+
+> A Vue.js project
+
+## Build Setup
+
+``` bash
+# install dependencies
 npm install
 
-npm run serve
+# serve with hot reload at localhost:8080
+npm run dev
 
+# build for production with minification
 npm run build
-
 ```
 
-## document
-도서 현황 및 신청프로세스의 어려움에 있어 개선의 필요성을 느껴 시작
-
-
-
-
-## 기능
-- 도서 대여
-- 도서 검색
-- 카테고리 별 도서 정렬
-- 년도별 도서 신청 내역 확인
-- 남은 예산 확인
-- 신청 품의서 템플릿 제공
-
-
-
-
-
-
-
-
-## flow
-- asis
-1) 신청자가 wiki에 도서 신청 목록 및  도서 url를 입력
-
-2) 관리자가 url로 도서 이름 및 비용 리스트업
-
-3) 품의서 등록
-
-> 해당 도서를 다시 DB에 등록 (현재 존재 하지 않음)
-
-
-
-- tobe
-1) 도서 신청을 직접 (bookid, 이름, 카테고리)
-
-2) 책정보를 크롤링하여 도서 DB등록, 도서는 신청중으로 상태 변경
- > 신청자가 누구인지, 한해 남은 예산이 계산 및 신청 양식이 그려짐
-
-3) 품의서 등록
-
-4) 관리자가 승인 (해당 책위치 표식)
-
-
-
-![erd](./src/book.png)
+For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).

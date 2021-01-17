@@ -63,6 +63,7 @@
     email
   } from 'vuelidate/lib/validators'
   import { mapState } from 'vuex'
+  import { ERROR } from '../store/constant'
 
   export default {
     name: 'login',
@@ -118,6 +119,7 @@
               this.$router.push('/list');
             } else {
               this.clearForm();
+              res.message = ERROR[res.code];
               this.$run('dialogAlert', res);
             }
           });
@@ -128,6 +130,7 @@
           if (res.state) {
             this.$router.push('/list');
           } else {
+            res.message = ERROR[res.code];
             this.$run('dialogAlert', res);
           }
         })
@@ -160,6 +163,7 @@
               this.$router.push('/list');
             } else {
               this.clearForm();
+              res.message = ERROR[res.code];
               this.$run('dialogAlert', res);
             }
           })

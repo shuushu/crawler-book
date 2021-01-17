@@ -1,15 +1,15 @@
 import algoliasearch from "algoliasearch";
 
 export const fbConfig = {
-  apiKey: "AIzaSyBwc5tkZM3fEQcyPC1-HfguTbIt8woO9iA",
-  authDomain: "shushu-cb26c.firebaseapp.com",
-  databaseURL: "https://shushu-cb26c.firebaseio.com",
-  storageBucket: "shushu-cb26c.appspot.com"
+  apiKey: "AIzaSyCh-Yb5QRWYNPtypC7ZR68JmxcDCld6f3w",
+  authDomain: "books-38df3.firebaseapp.com",
+  databaseURL: "https://books-38df3.firebaseio.com",
+  storageBucket: "books-38df3.appspot.com"
 };
 
 const algolia = algoliasearch(
-  'DRSKU1E4I6',
-  '00fa756e3e424016ca0d3ed071850f77'
+  'IR4NMVE7DJ',
+  '55d298ae2187ff5f27bebdf3db895a85'
 );
 
 

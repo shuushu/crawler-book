@@ -10,6 +10,7 @@
           <md-select v-model="filterTemp" name="filter" id="filter">
             <md-option value="all">전체보기</md-option>
             <md-option :value="i" v-for="i in rangeYear" :key="`year${i}`">{{i}}</md-option>
+            <md-option value="old">이전 도서</md-option>
           </md-select>
         </md-field>
       </div>
@@ -24,8 +25,8 @@
         </md-empty-state>
       </div>
       <div class="item-wrap" v-else v-for="(items, key) in fetchData" :key="key">
-        <h3 class="date"><md-icon>local_offer</md-icon>{{ key }}월 도서 신청 내역</h3>
-        <div class="total">
+        <h3 class="date"><md-icon>local_offer</md-icon>{{ key === 'old' ? '이전 도서 신청 내역' : `${key}월 도서 신청 내역` }}</h3>
+        <div class="total" v-if="key !== 'old'">
           남은 예산: {{ getCash(items, key) }}
           <md-button class="md-icon-button md-list-action" @click="getTemplate(items)">
             <md-icon class="md-primary">get_app</md-icon>

@@ -33,7 +33,8 @@ const routes = [...routerMap.map(route => {
 
 const router = new VueRouter({
   mode: 'history',
-  base: __dirname,
+  //base: __dirname,
+  base: '/trunk/_team/book/',
   routes
 });
 

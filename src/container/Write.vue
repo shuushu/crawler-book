@@ -55,6 +55,13 @@
       <div class="thumbnail" v-if="form.thumb">
         <img :src="form.thumb" alt="">
       </div>
+
+      <div>
+        <md-switch v-model="form.old">이전 도서</md-switch>
+      </div>
+      <div style="text-align: right;position: absolute;margin-top: -35px;right: 20px;">
+        <a href="https://www.aladin.co.kr/" target="_blank">https://www.aladin.co.kr/</a>
+      </div>
     </div>
 
     <md-card-actions>
@@ -64,6 +71,7 @@
       </div>
       <md-button v-else class="btn md-raised md-accent" @click.prevent="validateUser" :disabled="isLoading">write</md-button>
     </md-card-actions>
+
 
     <md-progress-bar md-mode="indeterminate" v-if="isLoading" />
     <md-snackbar :md-active.sync="userSaved">데이터를 가져오는 중입니다. 잠시 기다려주세요!</md-snackbar>
@@ -97,9 +105,8 @@
         cate: [],
         thumb: null,
         desc: null,
-        name: null
-
-
+        name: null,
+        old: false
       },
       userSaved: false,
     }),

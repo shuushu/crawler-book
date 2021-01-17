@@ -26,7 +26,14 @@ const yyyymm = (v) => {
   ].join('');
 }
 
+const mappingError = (res) => {
+  switch (res.code) {
+    case 'auth/wrong-password': res.message = '비밀번호가 잘못 되었습니다'
+    break;
+  }
 
+  return res
+}
 
-export { urlExp, curry, yyyymm }
+export { urlExp, curry, yyyymm, mappingError }
 

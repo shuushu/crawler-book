@@ -12,7 +12,7 @@
         <div class="category">
           {{ toUpperCase(data.cate) }}
         </div>
-        <img :src="data.thumb" alt="" width="100%" height="100%">
+        <img :src="getImage" alt="" width="100%" height="100%">
       </li>
       <li></li>
     </ul>
@@ -65,7 +65,12 @@
             let category = data.join(", ");
 
             return `${category.toUpperCase()}`
-          }
+          },
+        },
+        computed: {
+            getImage() {
+              return (this.data.thumb !== "undefined") ?  this.data.thumb : 'https://via.placeholder.com/500x625?text=NO%20IMAGE'
+            }
         }
     }
 </script>
